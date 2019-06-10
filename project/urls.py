@@ -19,6 +19,6 @@ from mainpage import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name="index"),
+    path('', views.index, name="index"),
     path('count/', views.count, name="count"), # 여기서 name 이 html url 사용됨
 ]

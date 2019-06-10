@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 # context  > dic 형 데이터를 home.html에 보내준다
 
-def home(request):
+def index(request):
     a = 10
     context = {
         'number' : a,
