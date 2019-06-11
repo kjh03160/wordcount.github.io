@@ -27,6 +27,38 @@ def count(request):
             dict[elem] += 1
         else:
             dict[elem] = 1
+    
+    item_list = list(dict.items())
+
+    word_list = list(dict.keys())
+
+    value_list = list(dict.values())
+    index_list = []
+
+    for i in value_list:
+        index_list.append(value_list.index(i))
+
+
+    sort_dict = {}
+    for i in range(len(value_list)):
+        sort_dict[value_list[i]] = index_list[i]
+
+
+    sort_items = sorted(sort_dict.items(), reverse=True)
+    sort_index = []
+    for i in sort_items:
+        sort_index.append(i[1])
+
+    sort_word = []
+    for i in sort_index:
+        sort_word.append(word_list[i])
+
+    sort_frequency = sorted(sort_dict.keys(), reverse=True)
+
+    result_dict = {}
+    for i in range(len(sort_word)):
+        result_dict[sort_word[i]] = sort_frequency[i]
+
 
     current = 0
     for spell in text:
@@ -48,12 +80,12 @@ def count(request):
         for frequency in word_frequency:
             denstiy = round((frequency / word_length), -2) * 100
             density_list[word] = denstiy
-
+    
 
 
     context = {
         'fulltext' : fulltext,
-        'dict' : dict.items(),
+        'dict' : result_dict.items(),
         'length' : length,
         'sentence_length' : sentence_length,
         'word_length' : word_length,
