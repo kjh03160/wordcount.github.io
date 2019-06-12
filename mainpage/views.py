@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+import re
 # Create your views here.
 
 # context  > dic 형 데이터를 home.html에 보내준다
@@ -16,8 +16,10 @@ def count(request):
     fulltext = request.GET['fulltext'] # form tag 안의 textarea name을 써줌
     
     text = fulltext.split() # 띄어쓰기로 나눠주기
-    
-    sentence = fulltext.split(".")
+
+    sentence = fulltext.split()
+    sentence = ''.join(sentence)
+    sentence = re.split(r"[\:\.\!\?]", sentence)
 
     dict = {}
 
@@ -27,37 +29,37 @@ def count(request):
             dict[elem] += 1
         else:
             dict[elem] = 1
-    
-    item_list = list(dict.items())
+    dict_sort = sorted(dict.items(), reverse=True, key = lambda x:x[1])
+    # item_list = list(dict.items())
 
-    word_list = list(dict.keys())
+    # word_list = list(dict.keys())
 
-    value_list = list(dict.values())
-    index_list = []
+    # value_list = list(dict.values())
+    # index_list = []
 
-    for i in value_list:
-        index_list.append(value_list.index(i))
-
-
-    sort_dict = {}
-    for i in range(len(value_list)):
-        sort_dict[value_list[i]] = index_list[i]
+    # for i in value_list:
+    #     index_list.append(value_list.index(i))
 
 
-    sort_items = sorted(sort_dict.items(), reverse=True)
-    sort_index = []
-    for i in sort_items:
-        sort_index.append(i[1])
+    # sort_dict = {}
+    # for i in range(len(value_list)):
+    #     sort_dict[value_list[i]] = index_list[i]
 
-    sort_word = []
-    for i in sort_index:
-        sort_word.append(word_list[i])
 
-    sort_frequency = sorted(sort_dict.keys(), reverse=True)
+    # sort_items = sorted(sort_dict.items(), reverse=True)
+    # sort_index = []
+    # for i in sort_items:
+    #     sort_index.append(i[1])
 
-    result_dict = {}
-    for i in range(len(sort_word)):
-        result_dict[sort_word[i]] = sort_frequency[i]
+    # sort_word = []
+    # for i in sort_index:
+    #     sort_word.append(word_list[i])
+
+    # sort_frequency = sorted(sort_dict.keys(), reverse=True)
+
+    # result_dict = {}
+    # for i in range(len(sort_word)):
+    #     result_dict[sort_word[i]] = sort_frequency[i]
 
 
     current = 0
@@ -70,7 +72,7 @@ def count(request):
     
 
 
-    sentence_length = len(sentence)
+    sentence_length = len(sentence) - 1
     word = list(dict.keys())
     word_frequency = list(dict.values())
     word_length = len(word_frequency)
@@ -85,7 +87,7 @@ def count(request):
 
     context = {
         'fulltext' : fulltext,
-        'dict' : result_dict.items(),
+        'dict' : dict_sort,
         'length' : length,
         'sentence_length' : sentence_length,
         'word_length' : word_length,
